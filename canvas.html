@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas width="500" height="500"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas')
+        // 1、获取上下文
+        const context = canvas.getContext('2d')
+
+        const rectSize = [100, 100]
+
+        // 2、设置绘制状态
+        context.fillStyle = 'red' // 填充颜色
+
+        // 3、开始绘制图形
+        context.beginPath()
+        context.translate(-0.5 * rectSize[0], -0.5 * rectSize[1]) // 平移画布
+
+        // 4、绘制具体形状
+        context.rect(0.5 * canvas.width, 0.5 * canvas.height, ...rectSize)
+
+        // 5、将内容输出到画布上
+        context.fill()
+    </script>
+</body>
+</html>
