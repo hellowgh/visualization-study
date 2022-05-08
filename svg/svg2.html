@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://d3js.org/d3-hierarchy.v1.min.js"></script>
+</head>
+<body>
+<h1></h1>
+
+<!--这里必须要设置width和height，否则看不到图像-->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="800" height="800" viewBox="0 0 1600 1600"></svg>
+<script>
+    const dataSource = 'https://s5.ssl.qhres2.com/static/b0695e2dd30daa64.json';
+
+    /* globals d3 */
+    (async function () {
+        const data = await (await fetch(dataSource)).json();
+
+        // 用d3计算每个圆的坐标和半径
+        const regions = d3.hierarchy(data)
+            .sum(d => 1)
+            .sort((a, b) => b.value - a.value);
+
+        const pack = d3.pack()
+            .size([1600, 1600])
+            .padding(3);
+
+        const root = pack(regions);
+        const svgroot = document.querySelector('svg');
+        const h1 = document.querySelector('h1');
+
+        function draw(parent, node, {fillStyle = 'rgba(0, 0, 0, 0.2)', textColor = 'white'} = {}) {
+            const {x, y, r, children} = node;
+
+            // 1、绘制root圆
+            // 创建元素并设置属性
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            // circle.setAttribute('cx', x);
+            // circle.setAttribute('cy', y);
+            // circle.setAttribute('r', r);
+
+            circle.style.cx = x;
+            circle.style.cy = y;
+            circle.style.r = r;
+
+            // 像DOM一样添加事件
+            circle.addEventListener('mouseover', function () {
+                const {name} = node.data;
+                h1.innerText = name;
+            })
+            circle.setAttribute('fill', fillStyle);
+            parent.appendChild(circle)
+
+            if(children) {
+                children.forEach(item => {
+                    draw(svgroot, item)
+                })
+            } else {
+                // 创建text也要用createElementNS
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('fill', textColor);
+                text.setAttribute('font-family', 'Arial');
+                text.setAttribute('font-size', '1.5rem');
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('x', x);
+                text.setAttribute('y', y);
+                const {name} = node.data;
+                text.textContent = name;
+                parent.appendChild(text)
+            }
+        }
+
+
+
+
+        draw(svgroot, root);
+    }());
+</script>
+</body>
+</html>
