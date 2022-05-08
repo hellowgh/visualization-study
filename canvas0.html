@@ -7,12 +7,13 @@
     <title>Document</title>
 </head>
 <body>
+<!--注意设置宽高-->
     <canvas width="500" height="500"></canvas>
 
     <script>
         const canvas = document.querySelector('canvas')
         // 1、获取上下文
-        const context = canvas.getContext('2d')
+        const context = canvas0.getContext('2d')
 
         const rectSize = [100, 100]
 
@@ -24,10 +25,17 @@
         context.translate(-0.5 * rectSize[0], -0.5 * rectSize[1]) // 平移画布
 
         // 4、绘制具体形状
-        context.rect(0.5 * canvas.width, 0.5 * canvas.height, ...rectSize)
+        context.rect(0.5 * canvas0.width, 0.5 * canvas0.height, ...rectSize)
 
         // 5、将内容输出到画布上
         context.fill()
+
+
+        const dataSource = 'https://s5.ssl.qhres.com/static/b0695e2dd30daa64.json';
+        (async function () {
+            const data = await (await fetch(dataSource)).json();
+            console.log(55, data);
+        }());
     </script>
 </body>
 </html>
