@@ -40,23 +40,24 @@
         const TAU = 2 * Math.PI;
 
         function draw(ctx, node, {fillStyle = 'rgba(0, 0, 0, 0.2)', textColor = 'white'} = {}) {
-            const {x, y, r, children} = node;
+            const {children, x, y, r} = node
 
-            // 2、设置绘图配置
+            //   2、设置绘制状态
             ctx.fillStyle = fillStyle;
 
-            // 3、开始绘图
+            //    3、开始绘制
             ctx.beginPath();
 
-            // 4、绘制root圆
-            ctx.arc(x, y, r, 0, TAU);
+            //    4、绘制图形
+            // ①绘制root圆
+            ctx.arc(x, y, r, 0, TAU)
 
-            // 5、将图形画到画布上
-            ctx.fill();
+            //    5、将图形放到画布上
+            ctx.fill()
 
             // ②循环绘制内部的圆
-            if (children) {
-                for (let i = 0; i < children.length; i++) {
+            if(children) {
+                for(let i = 0; i < children.length; i++) {
                     draw(ctx, children[i]);
                 }
             } else {
